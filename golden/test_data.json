@@ -1,0 +1,731 @@
+{
+  "schema": {
+    "input": {
+      "value_a": "float [0.001, 0.1]",
+      "value_b": "float [15, 40]",
+      "value_c": "float [50, 500]",
+      "value_d": "float [3, 20]"
+    },
+    "output": {
+      "output": "float, 4 decimals"
+    }
+  },
+  "tolerance": "abs(got - expected) <= 0.001 + 1e-4 * abs(expected)",
+  "seed": 51,
+  "cases": [
+    {
+      "id": "edge_control_1",
+      "category": "control",
+      "label": "0.1 M, weak 15 mV potential, small strong-attracting spheres: no barrier, fast coagulation (W ~ 1); both twists cancel in the ratio",
+      "input": {
+        "value_a": 0.1,
+        "value_b": 15.0,
+        "value_c": 50.0,
+        "value_d": 20.0
+      },
+      "expected": {
+        "output": 0.0006
+      }
+    },
+    {
+      "id": "edge_control_2",
+      "category": "control",
+      "label": "0.1 M, 15 mV, 500 nm, A = 20 zJ: deep in the fast regime, output 0 to 4 decimals",
+      "input": {
+        "value_a": 0.1,
+        "value_b": 15.0,
+        "value_c": 500.0,
+        "value_d": 20.0
+      },
+      "expected": {
+        "output": 0.0
+      }
+    },
+    {
+      "id": "edge_control_3",
+      "category": "control",
+      "label": "0.1 M, 20 mV, 100 nm, 15 zJ: fast regime; any DLVO/Fuchs variant gives ~0",
+      "input": {
+        "value_a": 0.1,
+        "value_b": 20.0,
+        "value_c": 100.0,
+        "value_d": 15.0
+      },
+      "expected": {
+        "output": 0.0005
+      }
+    },
+    {
+      "id": "edge_discrim_1",
+      "category": "discriminating",
+      "label": "Large strongly-attracting spheres at 10 mM: retardation (T1) weakens the attraction at the barrier and lifts log10 W by ~9.5",
+      "input": {
+        "value_a": 0.01,
+        "value_b": 30.0,
+        "value_c": 500.0,
+        "value_d": 20.0
+      },
+      "expected": {
+        "output": 50.4927
+      }
+    },
+    {
+      "id": "edge_discrim_2",
+      "category": "discriminating",
+      "label": "Small weakly-attracting spheres at 20 mM: hydrodynamic resistance (T2) dominates (+1.2), retardation minor (+0.3)",
+      "input": {
+        "value_a": 0.02,
+        "value_b": 25.0,
+        "value_c": 60.0,
+        "value_d": 6.0
+      },
+      "expected": {
+        "output": 4.6332
+      }
+    },
+    {
+      "id": "edge_discrim_3",
+      "category": "discriminating",
+      "label": "Both twists fire together at 50 mM on large spheres (textbook 52.3 -> 65.1)",
+      "input": {
+        "value_a": 0.05,
+        "value_b": 40.0,
+        "value_c": 500.0,
+        "value_d": 20.0
+      },
+      "expected": {
+        "output": 65.0564
+      }
+    },
+    {
+      "id": "edge_discrim_4",
+      "category": "discriminating",
+      "label": "1 mM, 30 mV, 200 nm, 10 zJ: twists add ~1.8 (T1) and ~1.4 (T2)",
+      "input": {
+        "value_a": 0.001,
+        "value_b": 30.0,
+        "value_c": 200.0,
+        "value_d": 10.0
+      },
+      "expected": {
+        "output": 41.0781
+      }
+    },
+    {
+      "id": "edge_discrim_5",
+      "category": "discriminating",
+      "label": "Mid-domain point: 30 mM, 25 mV, 300 nm, 8 zJ (textbook 14.5 -> 18.8)",
+      "input": {
+        "value_a": 0.03,
+        "value_b": 25.0,
+        "value_c": 300.0,
+        "value_d": 8.0
+      },
+      "expected": {
+        "output": 18.8365
+      }
+    },
+    {
+      "id": "edge_boundary_1",
+      "category": "boundary",
+      "label": "Corner of maximum stability: 1 mM, 40 mV, 500 nm, 3 zJ (log10 W > 220)",
+      "input": {
+        "value_a": 0.001,
+        "value_b": 40.0,
+        "value_c": 500.0,
+        "value_d": 3.0
+      },
+      "expected": {
+        "output": 223.6015
+      }
+    },
+    {
+      "id": "edge_boundary_2",
+      "category": "boundary",
+      "label": "Corner: 1 mM, 15 mV, 50 nm, 20 zJ -> marginal barrier, W of order 10",
+      "input": {
+        "value_a": 0.001,
+        "value_b": 15.0,
+        "value_c": 50.0,
+        "value_d": 20.0
+      },
+      "expected": {
+        "output": 0.9014
+      }
+    },
+    {
+      "id": "edge_boundary_3",
+      "category": "boundary",
+      "label": "Corner: 0.1 M (thinnest double layer), 40 mV, 50 nm, 3 zJ -> barrier survives at high salt; T2 is +1.6 while T1 is only +0.14",
+      "input": {
+        "value_a": 0.1,
+        "value_b": 40.0,
+        "value_c": 50.0,
+        "value_d": 3.0
+      },
+      "expected": {
+        "output": 14.8438
+      }
+    },
+    {
+      "id": "rand_00",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.003069,
+        "value_b": 27.555,
+        "value_c": 122.87,
+        "value_d": 16.961
+      },
+      "expected": {
+        "output": 14.4925
+      }
+    },
+    {
+      "id": "rand_01",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.002903,
+        "value_b": 28.808,
+        "value_c": 466.86,
+        "value_d": 9.755
+      },
+      "expected": {
+        "output": 78.0722
+      }
+    },
+    {
+      "id": "rand_02",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.086245,
+        "value_b": 33.287,
+        "value_c": 296.65,
+        "value_d": 13.692
+      },
+      "expected": {
+        "output": 16.1004
+      }
+    },
+    {
+      "id": "rand_03",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.014864,
+        "value_b": 24.006,
+        "value_c": 498.52,
+        "value_d": 9.866
+      },
+      "expected": {
+        "output": 32.3277
+      }
+    },
+    {
+      "id": "rand_04",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.09283,
+        "value_b": 36.314,
+        "value_c": 62.76,
+        "value_d": 7.389
+      },
+      "expected": {
+        "output": 9.2475
+      }
+    },
+    {
+      "id": "rand_05",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.009027,
+        "value_b": 35.365,
+        "value_c": 129.93,
+        "value_d": 13.469
+      },
+      "expected": {
+        "output": 26.8297
+      }
+    },
+    {
+      "id": "rand_06",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.005425,
+        "value_b": 34.642,
+        "value_c": 466.89,
+        "value_d": 15.956
+      },
+      "expected": {
+        "output": 98.3213
+      }
+    },
+    {
+      "id": "rand_07",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.002435,
+        "value_b": 34.007,
+        "value_c": 247.17,
+        "value_d": 17.233
+      },
+      "expected": {
+        "output": 55.422
+      }
+    },
+    {
+      "id": "rand_08",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.008715,
+        "value_b": 37.666,
+        "value_c": 493.77,
+        "value_d": 17.012
+      },
+      "expected": {
+        "output": 115.5926
+      }
+    },
+    {
+      "id": "rand_09",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.044891,
+        "value_b": 35.476,
+        "value_c": 316.46,
+        "value_d": 5.973
+      },
+      "expected": {
+        "output": 65.5349
+      }
+    },
+    {
+      "id": "rand_10",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.093844,
+        "value_b": 26.604,
+        "value_c": 57.29,
+        "value_d": 10.386
+      },
+      "expected": {
+        "output": 0.4398
+      }
+    },
+    {
+      "id": "rand_11",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.00676,
+        "value_b": 20.022,
+        "value_c": 482.16,
+        "value_d": 4.904
+      },
+      "expected": {
+        "output": 32.5133
+      }
+    },
+    {
+      "id": "rand_12",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.064311,
+        "value_b": 28.744,
+        "value_c": 130.38,
+        "value_d": 9.091
+      },
+      "expected": {
+        "output": 7.5905
+      }
+    },
+    {
+      "id": "rand_13",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.007955,
+        "value_b": 17.94,
+        "value_c": 393.36,
+        "value_d": 14.077
+      },
+      "expected": {
+        "output": 7.4172
+      }
+    },
+    {
+      "id": "rand_14",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.092173,
+        "value_b": 35.748,
+        "value_c": 403.69,
+        "value_d": 19.947
+      },
+      "expected": {
+        "output": 10.8216
+      }
+    },
+    {
+      "id": "rand_15",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.073078,
+        "value_b": 31.1,
+        "value_c": 292.67,
+        "value_d": 11.903
+      },
+      "expected": {
+        "output": 16.5427
+      }
+    },
+    {
+      "id": "rand_16",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.042433,
+        "value_b": 38.133,
+        "value_c": 423.73,
+        "value_d": 17.266
+      },
+      "expected": {
+        "output": 58.1732
+      }
+    },
+    {
+      "id": "rand_17",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.001134,
+        "value_b": 25.516,
+        "value_c": 89.25,
+        "value_d": 12.949
+      },
+      "expected": {
+        "output": 11.0952
+      }
+    },
+    {
+      "id": "rand_18",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.01446,
+        "value_b": 29.018,
+        "value_c": 436.09,
+        "value_d": 6.823
+      },
+      "expected": {
+        "output": 62.3924
+      }
+    },
+    {
+      "id": "rand_19",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.028687,
+        "value_b": 29.661,
+        "value_c": 145.89,
+        "value_d": 19.634
+      },
+      "expected": {
+        "output": 6.1365
+      }
+    },
+    {
+      "id": "rand_20",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.00128,
+        "value_b": 26.622,
+        "value_c": 291.01,
+        "value_d": 13.124
+      },
+      "expected": {
+        "output": 41.4966
+      }
+    },
+    {
+      "id": "rand_21",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.092059,
+        "value_b": 28.787,
+        "value_c": 448.98,
+        "value_d": 8.006
+      },
+      "expected": {
+        "output": 26.4887
+      }
+    },
+    {
+      "id": "rand_22",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.00918,
+        "value_b": 18.672,
+        "value_c": 337.86,
+        "value_d": 10.179
+      },
+      "expected": {
+        "output": 10.1159
+      }
+    },
+    {
+      "id": "rand_23",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.037128,
+        "value_b": 17.811,
+        "value_c": 258.94,
+        "value_d": 19.298
+      },
+      "expected": {
+        "output": 0.0001
+      }
+    },
+    {
+      "id": "rand_24",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.001053,
+        "value_b": 31.508,
+        "value_c": 354.87,
+        "value_d": 15.34
+      },
+      "expected": {
+        "output": 76.4499
+      }
+    },
+    {
+      "id": "rand_25",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.013025,
+        "value_b": 27.519,
+        "value_c": 481.76,
+        "value_d": 7.815
+      },
+      "expected": {
+        "output": 57.5482
+      }
+    },
+    {
+      "id": "rand_26",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.025553,
+        "value_b": 31.712,
+        "value_c": 377.75,
+        "value_d": 11.124
+      },
+      "expected": {
+        "output": 47.1356
+      }
+    },
+    {
+      "id": "rand_27",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.00108,
+        "value_b": 34.387,
+        "value_c": 175.67,
+        "value_d": 16.299
+      },
+      "expected": {
+        "output": 45.487
+      }
+    },
+    {
+      "id": "rand_28",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.09424,
+        "value_b": 34.413,
+        "value_c": 231.3,
+        "value_d": 17.572
+      },
+      "expected": {
+        "output": 6.3075
+      }
+    },
+    {
+      "id": "rand_29",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.005913,
+        "value_b": 23.0,
+        "value_c": 306.99,
+        "value_d": 14.108
+      },
+      "expected": {
+        "output": 19.2419
+      }
+    },
+    {
+      "id": "rand_30",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.02354,
+        "value_b": 28.816,
+        "value_c": 233.93,
+        "value_d": 15.625
+      },
+      "expected": {
+        "output": 15.2318
+      }
+    },
+    {
+      "id": "rand_31",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.004455,
+        "value_b": 30.16,
+        "value_c": 52.46,
+        "value_d": 5.226
+      },
+      "expected": {
+        "output": 9.8756
+      }
+    },
+    {
+      "id": "rand_32",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.054315,
+        "value_b": 20.388,
+        "value_c": 235.72,
+        "value_d": 3.906
+      },
+      "expected": {
+        "output": 9.0888
+      }
+    },
+    {
+      "id": "rand_33",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.033896,
+        "value_b": 23.211,
+        "value_c": 72.01,
+        "value_d": 7.657
+      },
+      "expected": {
+        "output": 2.5624
+      }
+    },
+    {
+      "id": "rand_34",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.072625,
+        "value_b": 33.891,
+        "value_c": 51.38,
+        "value_d": 19.211
+      },
+      "expected": {
+        "output": 0.901
+      }
+    },
+    {
+      "id": "rand_35",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.001395,
+        "value_b": 27.104,
+        "value_c": 290.48,
+        "value_d": 16.316
+      },
+      "expected": {
+        "output": 40.5047
+      }
+    },
+    {
+      "id": "rand_36",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.001918,
+        "value_b": 35.624,
+        "value_c": 173.37,
+        "value_d": 15.549
+      },
+      "expected": {
+        "output": 46.0344
+      }
+    },
+    {
+      "id": "rand_37",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.071413,
+        "value_b": 29.753,
+        "value_c": 50.83,
+        "value_d": 14.34
+      },
+      "expected": {
+        "output": 0.7362
+      }
+    },
+    {
+      "id": "rand_38",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.007422,
+        "value_b": 33.262,
+        "value_c": 402.98,
+        "value_d": 4.825
+      },
+      "expected": {
+        "output": 99.3804
+      }
+    },
+    {
+      "id": "rand_39",
+      "category": "random",
+      "label": "log-uniform value_a, uniform others",
+      "input": {
+        "value_a": 0.013666,
+        "value_b": 31.087,
+        "value_c": 466.95,
+        "value_d": 13.435
+      },
+      "expected": {
+        "output": 60.8529
+      }
+    }
+  ]
+}
